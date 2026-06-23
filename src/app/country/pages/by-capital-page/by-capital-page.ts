@@ -1,19 +1,18 @@
 import { Component } from '@angular/core';
+import { SearchInput } from "../../components/search-input/search-input";
 
 @Component({
   selector: 'app-by-capital-page',
-  imports: [],
+  imports: [SearchInput],
   templateUrl: './by-capital-page.html',
 })
 export class ByCapitalPage {
 
-  //Método de búsqueda
+  logValue(value:string){
 
-  onSearch(value:string){
-
-    console.log(value)
-
-
+    console.log('Se recibió el valor: '+value+" en el padre")
 
   }
+
+
 }
