@@ -2,7 +2,7 @@
   <input
   type="text"
   class="input mr-2"
-  placeholder="Buscar por capital"
+  [placeholder]="placeholderInput()"
   autofocus
   (keyup.enter)="onSearch(txtSearch.value)"
   #txtSearch
