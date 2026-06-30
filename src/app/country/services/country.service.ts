@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { RESTCountryResponse } from '../interfaces/rest-countries.interfaces';
+import {  RESTCountryResponse } from '../interfaces/rest-countries.interfaces';
 
 const API_URL = 'https://api.restcountries.com/countries/v5';
 

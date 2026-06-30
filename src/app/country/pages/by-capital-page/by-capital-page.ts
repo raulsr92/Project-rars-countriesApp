@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { SearchInput } from "../../components/search-input/search-input";
 import { CountryList } from '../../components/country-list/country-list';
 import { CountryService } from '../../services/country.service';
+import { RESTCountry } from '../../interfaces/rest-countries.interfaces';
 
 @Component({
   selector: 'app-by-capital-page',
@@ -14,6 +15,13 @@ export class ByCapitalPage {
 
     countryService = inject(CountryService)
 
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Signals: etapas en petición
+
+  isLoading = signal(false)
+
+  isError = signal<string|null>(null)
+
+  countries = signal<RESTCountry[]>([])
 
   //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Métodos
 
@@ -21,10 +29,24 @@ export class ByCapitalPage {
 
       console.log('Se recibió el valor: '+query+" en el padre")
 
-      this.countryService.searchByCapital(query)
-      .subscribe((resp)=>{
-        console.log(resp)
-      })
+      //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Indicar que se está cargando la petición
+        if (this.isLoading()) return
+        this.isLoading.set(true)
+
+      //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Indicar que se está cargando la petición
+        this.isError.set(null)
+
+      //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Acceder al servicio y su método de búsqueda por capital
+
+        this.countryService.searchByCapital(query)
+        .subscribe((countries)=>{
+
+          //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Indicar que la carga de la petición finalizó
+            this.isLoading.set(false)
+
+          //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Guardar el array de países resultante de la búsqueda
+            this.countries.set(countries.data.objects)
+        })
 
     }
 
