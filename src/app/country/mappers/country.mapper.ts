@@ -1,5 +1,6 @@
-import { Country } from "../interfaces/country.interface";
-import { RESTCountry } from "../interfaces/rest-countries.interfaces";
+import type { Country } from "../interfaces/country.interface";
+import type { RESTCountry } from "../interfaces/rest-countries.interfaces";
+import { Capital } from '../interfaces/rest-countries.interfaces';
 
 export class CountryMapper{
 
@@ -7,12 +8,20 @@ export class CountryMapper{
 
       static mapRESTCountryToCountry (objRESTCountry:RESTCountry):Country{
 
+        //Obtener array de capitales
+
+            const capitales = [];
+            for (let i = 0; i < objRESTCountry.capitals.length; i++) {
+                capitales.push(objRESTCountry.capitals[i].name)
+            }
+            console.log(capitales)
+
         return {
             id: objRESTCountry.uuid,
             icon: objRESTCountry.flag.emoji,
             flag: objRESTCountry.flag.url_svg,
             name: objRESTCountry.names.common,
-            capital: objRESTCountry.capitals[0].name,
+            capital: capitales.join(" / "),
             continent: objRESTCountry.subregion,
             population: objRESTCountry.population,
         }

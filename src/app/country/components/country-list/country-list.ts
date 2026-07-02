@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { RESTCountry } from '../../interfaces/rest-countries.interfaces';
+import { Country } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'country-list',
@@ -10,7 +10,7 @@ export class CountryList {
 
   //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Input signals properties
 
-    countriesInput = input.required<RESTCountry[]>();
+    countriesInput = input.required<Country[]>();
 
 
 

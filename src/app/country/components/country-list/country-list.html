@@ -20,16 +20,16 @@
           <tbody>
             <!-- rows with for -->
 
-              @for (country of countriesInput(); track country.uuid; let number = $index) {
+              @for (country of countriesInput(); track country.id; let number = $index) {
                 <tr>
                   <th>{{number+1}}</th>
-                  <td>{{country.flag.emoji}}</td>
+                  <td>{{country.icon}}</td>
                   <td>
-                    <img [src]="country.flag.url_svg" class="w-20 rounded-lg" [alt]="country.names.common">
+                    <img [src]="country.flag" class="w-20 rounded-lg" [alt]="country.name">
                   </td>
-                  <td>{{country.names.common}}</td>
-                  <td>{{country.capitals[0].name}}</td>
-                  <td>{{country.subregion}}</td>
+                  <td>{{country.name}}</td>
+                  <td>{{country.capital}}</td>
+                  <td>{{country.continent}}</td>
                   <td>{{country.population}}</td>
                   <td>
                     <a href="" class="link-primary">Más información</a>

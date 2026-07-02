@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import {  RESTCountryResponse } from '../interfaces/rest-countries.interfaces';
+import { map, Observable } from 'rxjs';
+import { Country } from '../interfaces/country.interface';
+import { CountryMapper } from '../mappers/country.mapper';
 
 const API_URL = 'https://api.restcountries.com/countries/v5';
 
@@ -22,7 +25,7 @@ export class CountryService {
 
   //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Métodos
 
-    searchByCapital(query:string){
+    searchByCapital(query:string):Observable<Country[]>{
 
       query = query.toLowerCase();
 
@@ -31,7 +34,13 @@ export class CountryService {
 
       return this.http.get<RESTCountryResponse>(`${API_URL}/capitals?q=${query}`,{
         headers: this.headers
-      })
+      }).pipe(
+
+          map( resp => resp.data.objects),
+
+          map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries))
+
+      )
     }
 
 }

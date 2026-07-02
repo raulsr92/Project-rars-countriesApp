@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { SearchInput } from "../../components/search-input/search-input";
 import { CountryList } from '../../components/country-list/country-list';
 import { CountryService } from '../../services/country.service';
-import { RESTCountry } from '../../interfaces/rest-countries.interfaces';
+import { Country } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'app-by-capital-page',
@@ -21,12 +21,11 @@ export class ByCapitalPage {
 
   isError = signal<string|null>(null)
 
-  countries = signal<RESTCountry[]>([])
+  countries = signal<Country[]>([])
 
   //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Métodos
 
     logValue(query:string){
-
       console.log('Se recibió el valor: '+query+" en el padre")
 
       //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Indicar que se está cargando la petición
@@ -45,7 +44,9 @@ export class ByCapitalPage {
             this.isLoading.set(false)
 
           //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Guardar el array de países resultante de la búsqueda
-            this.countries.set(countries.data.objects)
+            this.countries.set(countries)
+
+            console.log(this.countries())
         })
 
     }
