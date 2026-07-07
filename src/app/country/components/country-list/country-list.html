@@ -30,7 +30,11 @@
                   <td>{{country.name}}</td>
                   <td>{{country.capital}}</td>
                   <td>{{country.continent}}</td>
-                  <td>{{country.population}}</td>
+                  <td>
+                    <span class="badge badge-success font-bold">
+                      {{country.population | number:'1.0-2'}}
+                    </span>
+                  </td>
                   <td>
                     <a href="" class="link-primary">Más información</a>
                   </td>
