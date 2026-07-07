@@ -20,7 +20,7 @@ export class CountryMapper{
             id: objRESTCountry.uuid,
             icon: objRESTCountry.flag.emoji,
             flag: objRESTCountry.flag.url_svg,
-            name: objRESTCountry.names.common,
+            name: objRESTCountry.names.translations["spa"].common ?? "No tiene nombre en español disponible",
             capital: capitales.join(" / "),
             continent: objRESTCountry.subregion,
             population: objRESTCountry.population,
