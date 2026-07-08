@@ -3,6 +3,7 @@ import { SearchInput } from "../../components/search-input/search-input";
 import { CountryList } from '../../components/country-list/country-list';
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.interface';
+import { isEmpty } from 'rxjs';
 
 @Component({
   selector: 'app-by-capital-page',
@@ -27,6 +28,7 @@ export class ByCapitalPage {
 
     logValue(query:string){
       console.log('Se recibió el valor: '+query+" en el padre")
+      console.log(query)
 
       //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Indicar que se está cargando la petición
         if (this.isLoading()) return
@@ -38,15 +40,40 @@ export class ByCapitalPage {
       //●●●●●●●●●●●●●●●●●●●●●●●●●●●●● Acceder al servicio y su método de búsqueda por capital
 
         this.countryService.searchByCapital(query)
-        .subscribe((countries)=>{
+        .subscribe({
+          next: (countries)=>{
+            //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Indicar que la carga de la petición finalizó
+              this.isLoading.set(false)
+            //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Guardar el array de países resultante de la búsqueda
+              this.countries.set(countries)
+              console.log(this.countries())
 
-          //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Indicar que la carga de la petición finalizó
-            this.isLoading.set(false)
+            //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Detectar array vacío
+              if (this.countries().length === 0 ) {
+                  this.isError.set(`No se encontró un país con la búsqueda:  ${query}`)
+                  console.log(this.isError())
+              }
+            },
+            error: (err)=>{
+              console.log(err)
+              //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Indicar que la carga de la petición finalizó
+                 this.isLoading.set(false)
 
-          //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Guardar el array de países resultante de la búsqueda
-            this.countries.set(countries)
+              //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Guardar un array vació
+                  this.countries.set([])
 
-            console.log(this.countries())
+              //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Establecer el error
+
+                //~~~~~~~ Error por campo vacío
+
+                  if (query.trim()==="") {
+                    this.isError.set(`No ha introducido ningún término de búsqueda`)
+                    console.log(this.isError())
+                  } else{
+                    this.isError.set(`Error en la petición: ${err.message}`)
+                  }
+
+            }
         })
 
     }

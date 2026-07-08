@@ -3,4 +3,8 @@
  placeholderInput="Buscar por capital"
 />
 
+@if (isError()) {
+    <h2 class="text-red-600 mt-3">{{ isError()}}</h2>
+}
+
 <country-list [countriesInput]="countries()"/>
