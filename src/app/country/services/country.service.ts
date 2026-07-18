@@ -47,4 +47,25 @@ export class CountryService {
       )
     }
 
+    searchByCountry(query:string):Observable<Country[]>{
+
+      query = query.toLowerCase();
+
+      console.log(this.headers)
+
+      return this.http.get<RESTCountryResponse>(`${API_URL}/names.common?q=${query}`,{
+        headers: this.headers
+      }).pipe(
+
+          map( resp => resp.data.objects),
+          map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
+
+          catchError(error =>{
+            console.log('Error fetching', error)
+            return throwError(()=> new Error('No se pudo obtener países con ese query'))
+          }),
+
+      )
+    }
+
 }
