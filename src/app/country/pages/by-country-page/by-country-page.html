@@ -3,6 +3,11 @@
  placeholderInput="Buscar por país"
 />
 
+@if (countryResource.isLoading()) {
+
+  <p class="text-blue-600 mt-3">Cargando resultados...</p>
+}
+
 
 @if (countryResource.error()) {
 

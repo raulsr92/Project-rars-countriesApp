@@ -17,7 +17,7 @@ export class CountryMapper{
             console.log(capitales)
 
         return {
-            id: objRESTCountry.uuid,
+            code: objRESTCountry.codes.alpha_2,
             icon: objRESTCountry.flag.emoji,
             flag: objRESTCountry.flag.url_svg,
             name: objRESTCountry.names.translations["spa"].common ?? "No tiene nombre en español disponible",

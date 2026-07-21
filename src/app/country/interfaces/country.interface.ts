@@ -1,6 +1,6 @@
 
 export interface Country{
-  id: string;
+  code: string;
   icon: string;
   flag:string;
   name: string;

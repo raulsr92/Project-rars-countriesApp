@@ -20,7 +20,7 @@
           <tbody>
             <!-- rows with for -->
 
-              @for (country of countriesInput(); track country.id; let number = $index) {
+              @for (country of countriesInput(); track country.code; let number = $index) {
                 <tr>
                   <th>{{number+1}}</th>
                   <td>{{country.icon}}</td>
@@ -36,7 +36,7 @@
                     </span>
                   </td>
                   <td>
-                    <a href="" class="link-primary">Más información</a>
+                    <a [routerLink]="['/country/by', country.code]" class="link-primary">Más información</a>
                   </td>
                 </tr>
               }@empty {
