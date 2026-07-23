@@ -39,12 +39,42 @@
                     <a [routerLink]="['/country/by', country.code]" class="link-primary">Más información</a>
                   </td>
                 </tr>
-              }@empty {
+
+              }
+               <!--@empty {
                 <tr>
                   <p>No hay países que coincidan con la búsqueda</p>
                 </tr>
               }
+            -->
+                <!--Si tenemos un mensaje de error -->
+                  @if (errorMessage()) {
+                    <tr>
+                      <td colspan="8" class="text-center text-red-600">
+                        {{errorMessage()}}
+                      </td>
+                    </tr>
+                  }
 
+                <!--Si no tenemosp países -->
+
+                  @if (isEmpty()) {
+                    <tr>
+                      <td colspan="8" class="text-center text-gray-600">
+                        No se encontraron resultados
+                      </td>
+                    </tr>
+                  }
+
+                <!--Si se está cargando la data -->
+
+                  @if(isLoading()) {
+                    <tr>
+                      <td colspan="8" class="text-center text-blue-600">
+                        Buscando países ⌛⌛⏳⏳...
+                      </td>
+                    </tr>
+                  }
           </tbody>
       </table>
   </section>

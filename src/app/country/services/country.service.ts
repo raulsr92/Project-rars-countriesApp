@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import {  RESTCountryResponse } from '../interfaces/rest-countries.interfaces';
-import { map, Observable, catchError, throwError } from 'rxjs';
+import { map, Observable, catchError, throwError, delay } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 import { CountryMapper } from '../mappers/country.mapper';
 
@@ -59,7 +59,7 @@ export class CountryService {
 
           map( resp => resp.data.objects),
           map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
-
+          delay(1000),
           catchError(error =>{
             console.log('Error fetching', error)
             return throwError(()=> new Error('No se pudo obtener países con ese query'))

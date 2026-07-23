@@ -3,6 +3,16 @@
  placeholderInput="Buscar por país"
 />
 
+  <country-list
+    [countriesInput]="countryResource.value() ?? []"
+    [errorMessage]="countryResource.error()"
+    [isEmpty]="countryResource.value()?.length===0"
+    [isLoading]="countryResource.isLoading()"
+    />
+
+
+
+  <!--
 @if (countryResource.isLoading()) {
 
   <p class="text-blue-600 mt-3">Cargando resultados...</p>
@@ -10,13 +20,11 @@
 
 
 @if (countryResource.error()) {
-
     <h2 class="text-red-600 mt-3">{{ countryResource.error()}}</h2>
-
 }
+
 
 @if (countryResource.hasValue()) {
-
   <country-list [countriesInput]="countryResource.value()"/>
-
 }
+-->
