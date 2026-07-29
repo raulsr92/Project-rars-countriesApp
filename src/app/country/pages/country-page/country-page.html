@@ -1,1 +1,29 @@
-<p>country-page works!</p>
+
+
+@if(countryResource.isLoading()) {
+
+  <p class="text-center text-blue-600 mt-12">Cargando la información del país ⌛⌛⏳⏳...</p>
+
+} @else if (countryResource.error() || !countryResource.hasValue()) {
+
+  <section class="flex flex-col items-center justify-center mt-10">
+    <h1>No se encontró el país</h1>
+    <a href="" class="link-primary cursor-pointer">Regresar</a>
+  </section>
+}
+
+
+@if(countryResource.hasValue()){
+
+  <section class="flex flex-col gap-y-8">
+    <h1> Bienvenidos al país  <span class="text-3xl font-bold">{{countryResource.value().name}} </span> - {{countryCode}}</h1>
+
+    <img [src]="countryResource.value().flag" class="w-60 rounded-lg" [alt]="countryResource.value().name">
+  </section>
+
+}
+
+
+
+
+

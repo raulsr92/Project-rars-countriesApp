@@ -25,6 +25,8 @@ export class CountryService {
 
   //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Métodos
 
+    //∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞ Método para buscar por el nombre de su capital
+
     searchByCapital(query:string):Observable<Country[]>{
 
       query = query.toLowerCase();
@@ -47,6 +49,9 @@ export class CountryService {
       )
     }
 
+    //∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞ Método para buscar por el nombre del país
+
+
     searchByCountry(query:string):Observable<Country[]>{
 
       query = query.toLowerCase();
@@ -68,4 +73,28 @@ export class CountryService {
       )
     }
 
+    //∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞ Método para traer la infomación de un país
+
+    searchCountryByAlphaCode(code: string){
+
+      const URL = `${API_URL}/codes.alpha_2/${code}`
+
+      return this.http.get<RESTCountryResponse>(URL,{
+        headers: this.headers
+      }).pipe(
+          map( resp => resp.data.objects),
+          map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
+          map( (countries)=>countries.at(0)),
+          delay(1000),
+          catchError(error =>{
+            console.log('Error fetching', error)
+            return throwError(()=> new Error(`No se pudo obtener países con ese código:  ${code}`))
+          }),
+
+      )
+    }
+
+
 }
+
+
