@@ -2,10 +2,12 @@ import {  Component, inject, resource } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CountryService } from '../../services/country.service';
 import { firstValueFrom } from 'rxjs';
+import { NotFound } from '../../../shared/components/not-found/not-found';
+import { CountryInformation } from './country-information/country-information';
 
 @Component({
   selector: 'app-country-page',
-  imports: [],
+  imports: [NotFound, CountryInformation],
   templateUrl: './country-page.html',
 })
 export class CountryPage {
