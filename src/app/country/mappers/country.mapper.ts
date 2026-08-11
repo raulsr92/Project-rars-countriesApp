@@ -20,10 +20,15 @@ export class CountryMapper{
             code: objRESTCountry.codes.alpha_2,
             icon: objRESTCountry.flag.emoji,
             flag: objRESTCountry.flag.url_svg,
+            flagDescription: objRESTCountry.flag["description"],
             name: objRESTCountry.names.translations["spa"].common ?? "No tiene nombre en español disponible",
+            nameOficial: objRESTCountry.names.translations["spa"]?.official ?? "No tiene nombre oficial en español disponible",
             capital: capitales.join(" / "),
             continent: objRESTCountry.subregion,
             population: objRESTCountry.population,
+            area: objRESTCountry.area.kilometers,
+            currency: objRESTCountry.currencies[0].name,
+            currencySymbol: objRESTCountry.currencies[0].symbol
         }
       }
 

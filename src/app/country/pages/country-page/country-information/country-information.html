@@ -1,9 +1,105 @@
-<section class="flex flex-col gap-y-8">
-    <h1> Bienvenidos al país  <span class="text-3xl font-bold">{{country().name}} </span>
-      - {{country().code}}</h1>
 
-    <img [src]="country().flag" class="w-60 rounded-lg" [alt]="country().name">
+<section class="flex flex-col gap-y-8 mb-10">
 
-    <p>Tiene una población de {{country().population | number }} habitantes</p>
+    <header class="flex justify-center items-center gap-x-3 border-b-2 border-black pb-3">
+      <div class="avatar">
+        <div class="ring-blue-800 ring-offset-base-100 w-15 rounded-full ring-2 ring-offset-2">
+          <img [src]="country().flag" />
+        </div>
+      </div>
+
+      <h1 class="font-bold uppercase text-3xl"> {{country().name}}</h1>
+    </header>
+
+    <main class="flex flex-col gap-y-9 items-center">
+
+      <div class="w-[70%]  flex items-center justify-center gap-x-10">
+
+          <div class="w-[60%] flex flex-col gap-y-6">
+          <!--<img [src]="country().flag" class="w-60 rounded-lg" [alt]="country().name">-->
+
+            <figure class="diff aspect-16/9 w-[500px]" tabindex="0">
+              <div class="diff-item-1" role="img" tabindex="0">
+                <div class="bg-primary text-primary-content grid place-content-center text-9xl font-black">
+                  <img
+                          alt="daisy"
+                          [src]="country().flag" />
+                </div>
+              </div>
+              <div class="diff-item-2" role="img">
+                <div class="bg-base-200 grid place-content-center text-9xl font-black opacity-25"><img
+                          alt="daisy"
+                          [src]="country().flag" />
+
+                </div>
+              </div>
+              <div class="diff-resizer"></div>
+            </figure>
+
+            <div class="flex flex-col gap-y-5">
+              <h3 class="font-semibold text-[20px] font-mono">Descripción de la Bandera</h3>
+              <p class="text-[18px] text-gray-500 font-normal text-justify">{{ country().flagDescription }}</p>
+            </div>
+
+          </div>
+
+          <div class="stats shadow flex flex-col gap-y-3 stats-vertical border-blue-400 border-1 bg-blue-50">
+            <div class="stat">
+
+              <div class="stat-title text-[16px]">Capital:</div>
+              <div class="stat-value text-primary">{{country().capital}}</div>
+              <!-- <div class="stat-desc">21% more than last month</div>-->
+            </div>
+
+            <div class="stat">
+              <div class="stat-figure text-secondary">
+              </div>
+              <div class="stat-title text-[16px]">Área total:</div>
+              <div class="stat-value text-secondary">{{country().area | number}}</div>
+              <!--<div class="stat-desc">21% more than last month</div>-->
+            </div>
+
+            <div class="stat">
+              <div class="stat-figure text-secondary">
+              </div>
+              <div class="stat-title text-[16px]">Población:</div>
+              <div class="stat-value text-emerald-600">{{country().population| number}}</div>
+              <!--<div class="stat-desc">21% more than last month</div>-->
+            </div>
+          </div>
+      </div>
+
+      <article class="w-[70%] bg-gray-300 py-8 rounded-lg px-3">
+        <div class="chat chat-start ">
+          <div class="chat-bubble chat-bubble-primary bg-gray-500 text-white text-[18px]">¿Cuál es su nombre oficial?</div>
+        </div>
+
+        <div class="chat chat-end">
+          <div class="chat-bubble chat-bubble-info bg-gray-400 text-[18px] font-semibold ">{{country().nameOficial}}</div>
+        </div>
+
+        <div class="chat chat-start">
+          <div class="chat-bubble chat-bubble-secondary bg-gray-500 text-white text-[18px]">
+            ¿En qué continente se ubica?
+          </div>
+        </div>
+
+        <div class="chat chat-end">
+          <div class="chat-bubble chat-bubble-info bg-gray-400 text-[18px] font-semibold ">{{country().continent}}</div>
+        </div>
+
+        <div class="chat chat-start">
+          <div class="chat-bubble chat-bubble-accent bg-gray-500 text-white text-[18px]">
+            ¿Cuál es su moneda oficial?
+          </div>
+        </div>
+
+        <div class="chat chat-end">
+          <div class="chat-bubble chat-bubble-info bg-gray-400 text-[18px] font-semibold "> {{country().currency}} - {{country().currencySymbol}}</div>
+        </div>
+
+      </article>
+    </main>
+
 
   </section>
