@@ -1,6 +1,7 @@
 <country-search-input
  (inputValue)="query.set($event)"
  placeholderInput="Buscar por capital"
+ [debounceTime]=500
 />
 
   <country-list

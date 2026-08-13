@@ -1,4 +1,4 @@
-import {Component, input, output } from '@angular/core';
+import {Component, effect, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'country-search-input',
@@ -6,6 +6,10 @@ import {Component, input, output } from '@angular/core';
   templateUrl: './search-input.html'
 })
 export class SearchInput {
+
+  //Signals
+
+    inputValor = signal<string>('')
 
   //Event output
 
@@ -15,16 +19,37 @@ export class SearchInput {
 
     placeholderInput = input.required<string>()
 
+    debounceTime = input<number>(300)
+
   //Método de búsqueda
 
-    onSearch(value:string){
+      onSearch(value:string){
 
-      console.log(value)
+        //console.log(value)
 
-      //emitir el event output
+        //emitir el event output
 
-      this.inputValue.emit(value)
+        this.inputValue.emit(value)
 
-    }
+      }
+  //Crear un efecto
+
+      debounceEffect = effect((onCleanup)=>{
+
+        const value = this.inputValor();
+
+        const timeout = setTimeout(()=>{
+
+          this.inputValue.emit(value)
+
+        }, this.debounceTime())
+
+        onCleanup(()=>{
+
+          clearTimeout(timeout)
+
+        })
+
+      })
 
 }
