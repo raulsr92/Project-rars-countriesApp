@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import {  RESTCountryResponse } from '../interfaces/rest-countries.interfaces';
-import { map, Observable, catchError, throwError, delay, of } from 'rxjs';
+import { map, Observable, catchError, throwError, delay, of, tap } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 import { CountryMapper } from '../mappers/country.mapper';
 
@@ -19,6 +19,10 @@ export class CountryService {
   private http = inject(HttpClient);
   // This service can now make HTTP requests via `this.http`.
 
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Caché de búsquedas
+
+  private queryCacheCapital = new Map<string, Country[]>()
+
   private headers = new HttpHeaders({
     Authorization: `Bearer ${this.envs.restCountriesApiKey}`
   });
@@ -30,6 +34,17 @@ export class CountryService {
     searchByCapital(query:string):Observable<Country[]>{
 
       query = query.toLowerCase();
+
+      //Verificar si ya existe la búsqueda en caché
+
+          if(this.queryCacheCapital.has(query)){
+
+            //retornamos el valor al que le corresponde esa key (que es la query) como un observable
+
+            return of(this.queryCacheCapital.get(query)!)
+          }
+
+          console.log(`Llegando al servidor por ${query}`)
 
       //console.log(this.headers)
       //console.log(`${API_URL}/capitals?q=${query}`)
@@ -43,7 +58,13 @@ export class CountryService {
 
           map( resp => resp.data.objects),
           map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
+          tap(
+              countries =>{
+                  this.queryCacheCapital.set(query,countries)
 
+                  console.log(this.queryCacheCapital)
+              }
+          ),
           catchError(error =>{
             console.log('Error fetching', error)
             return throwError(()=> new Error('No se pudo obtener países con ese query'))
