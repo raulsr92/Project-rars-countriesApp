@@ -23,6 +23,8 @@ export class CountryService {
 
   private queryCacheCapital = new Map<string, Country[]>()
 
+  private queryCacheCountry = new Map<string, Country[]>()
+
   private headers = new HttpHeaders({
     Authorization: `Bearer ${this.envs.restCountriesApiKey}`
   });
@@ -82,6 +84,18 @@ export class CountryService {
 
       console.log(this.headers)
 
+      //Verificar si ya existe la búsqueda en caché
+
+          if(this.queryCacheCountry.has(query)){
+
+            //retornamos el valor al que le corresponde esa key (que es la query) como un observable
+            return of(this.queryCacheCountry.get(query)!)
+          }
+
+      //Si el término no está en caché
+
+      console.log(`Llegando al servidor por ${query}`)
+
       return this.http.get<RESTCountryResponse>(`${API_URL}/names.common?q=${query}`,{
         headers: this.headers
       }).pipe(
@@ -89,6 +103,13 @@ export class CountryService {
           map( resp => resp.data.objects),
           map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
           delay(1000),
+          tap(
+              countries =>{
+                  this.queryCacheCountry.set(query,countries)
+
+                  console.log(this.queryCacheCountry)
+              }
+          ),
           catchError(error =>{
             console.log('Error fetching', error)
             return throwError(()=> new Error('No se pudo obtener países con ese query'))
