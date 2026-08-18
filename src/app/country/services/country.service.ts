@@ -117,6 +117,27 @@ export class CountryService {
       )
     }
 
+    //∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞ Método para buscar por el nombre de Región
+
+    searchByRegion(query:string):Observable<Country[]>{
+
+      query = query.toLowerCase();
+
+      return this.http.get<RESTCountryResponse>(`${API_URL}/region/${query}`,{
+        headers: this.headers
+      }).pipe(
+          map( resp => resp.data.objects),
+          map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
+          delay(1000),
+          catchError(error =>{
+            console.log('Error fetching', error)
+            return throwError(()=> new Error('No se pudo obtener países con ese query'))
+          }),
+
+      )
+    }
+
+
     //∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞ Método para traer la infomación de un país
 
     searchCountryByAlphaCode(code: string){

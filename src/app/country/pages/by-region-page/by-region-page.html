@@ -1,3 +1,26 @@
 
-<!--
-<country-list/>  -->
+<!--Botones-->
+
+<div class="flex gap-x-10">
+  @for (region of regions; track $index) {
+
+    <button
+      class="btn btn-secondary btn-md text-white rounded-xl px-8 focus:outline-1 focus:outline-fuchsia-600 focus:bg-purple-600"
+      (click)="query.set(region)"
+    >
+      {{region.toUpperCase()}}
+
+    </button>
+
+  }
+</div>
+
+<country-list
+    [countriesInput]="countryResource.value() ?? []"
+    [errorMessage]="countryResource.error()"
+    [isEmpty]="countryResource.value()?.length===0"
+    [isLoading]="countryResource.isLoading()"
+/>
+
+
+
