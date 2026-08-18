@@ -106,7 +106,6 @@ export class CountryService {
           tap(
               countries =>{
                   this.queryCacheCountry.set(query,countries)
-
                   console.log(this.queryCacheCountry)
               }
           ),
