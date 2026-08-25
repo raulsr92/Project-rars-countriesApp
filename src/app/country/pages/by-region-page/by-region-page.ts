@@ -12,10 +12,7 @@ import { Region } from '../../types/region.types';
 export class ByRegionPage {
 
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios inyectados
-
       countryService = inject(CountryService)
-
-
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Array de Regiones
 
       public regions: Region[] = [
@@ -24,12 +21,11 @@ export class ByRegionPage {
           'Asia',
           'Europe',
           'Oceania',
-          'Antartic',
+          'Antarctic',
         ];
-
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Async reactivity with resources
 
-      query = signal<string>("");
+      query = signal<Region|null>(null);
 
       countryResource = resource({
 
@@ -37,7 +33,7 @@ export class ByRegionPage {
         loader: async({params})=>{
 
             //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 1: query vacío
-              if (params.query ===  '') return [];
+              if (params.query ===  null) return [];
 
             //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 2: query con data
               return await firstValueFrom(this.countryService.searchByRegion(params.query))

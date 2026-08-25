@@ -5,6 +5,7 @@ import {  RESTCountryResponse } from '../interfaces/rest-countries.interfaces';
 import { map, Observable, catchError, throwError, delay, of, tap } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 import { CountryMapper } from '../mappers/country.mapper';
+import { Region } from '../types/region.types';
 
 const API_URL = 'https://api.restcountries.com/countries/v5';
 
@@ -25,7 +26,7 @@ export class CountryService {
 
   private queryCacheCountry = new Map<string, Country[]>()
 
-  private queryCacheRegion = new Map<string, Country[]>()
+  private queryCacheRegion = new Map<Region, Country[]>()
 
 
   private headers = new HttpHeaders({
@@ -122,39 +123,35 @@ export class CountryService {
 
     //∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞ Método para buscar por el nombre de Región
 
-    searchByRegion(query:string):Observable<Country[]>{
-
-      query = query.toLowerCase();
-
+    searchByRegion(query:Region):Observable<Country[]>{
+      //query = query.toLowerCase();
       //Verificar si ya existe la búsqueda en caché
-
           if(this.queryCacheRegion.has(query)){
-
             //retornamos el valor al que le corresponde esa key (que es la query) como un observable
-
             return of(this.queryCacheRegion.get(query)!)
           }
-
           console.log(`Llegando al servidor por ${query}`)
-
       return this.http.get<RESTCountryResponse>(`${API_URL}/region/${query}`,{
         headers: this.headers
       }).pipe(
           map( resp => resp.data.objects),
-          map( (respCountries)=> CountryMapper.mapRESTCountriesToCountryArray(respCountries)),
+
+          map( (respCountries)=> {
+            console.log('RespCountries:', respCountries);
+            return CountryMapper.mapRESTCountriesToCountryArray(respCountries)
+          }),
           delay(1000),
           tap(
             countries => {
+              console.log('Countries:', countries);
               this.queryCacheRegion.set(query, countries)
               console.log(this.queryCacheRegion)
-
             }
           ),
           catchError(error =>{
             console.log('Error fetching', error)
             return throwError(()=> new Error('No se pudo obtener países con ese query'))
           }),
-
       )
     }
 

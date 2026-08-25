@@ -1,11 +1,13 @@
 
+<h1 class="mb-6 font-semibold text-2xl">Por Región</h1>
+<h3 class="mb-6 text-lg">Seleccione una región: </h3>
 <!--Botones-->
 
-<div class="flex gap-x-10">
-  @for (region of regions; track $index) {
+<div class="flex gap-x-8">
+  @for (region of regions; track region) {
 
     <button
-      class="btn btn-secondary btn-md text-white rounded-xl px-8 focus:outline-1 focus:outline-fuchsia-600 focus:bg-purple-600"
+      class="w-[120px] btn btn-secondary btn-md text-white rounded-xl px-8 focus:outline-1 focus:outline-fuchsia-600 focus:bg-purple-600"
       (click)="query.set(region)"
     >
       {{region.toUpperCase()}}

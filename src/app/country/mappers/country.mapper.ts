@@ -10,25 +10,31 @@ export class CountryMapper{
 
         //Obtener array de capitales
 
-            const capitales = [];
-            for (let i = 0; i < objRESTCountry.capitals.length; i++) {
-                capitales.push(objRESTCountry.capitals[i].name)
+            const capitales:string[] = [];
+
+            if (objRESTCountry.capitals && objRESTCountry.capitals.length > 0) {
+              for (let i = 0; i < objRESTCountry.capitals.length; i++) {
+                  capitales.push(objRESTCountry.capitals[i]?.name ?? "")
+              }
             }
+
             console.log(capitales)
+            console.log(objRESTCountry.names.translations["spa"].common ?? "No tiene nombre en español disponible")
+            console.log(objRESTCountry.capitals[0]?.name)
 
         return {
             code: objRESTCountry.codes.alpha_2,
             icon: objRESTCountry.flag.emoji,
-            flag: objRESTCountry.flag.url_svg,
+            flag: objRESTCountry.flag.url_png,
             flagDescription: objRESTCountry.flag["description"],
             name: objRESTCountry.names.translations["spa"].common ?? "No tiene nombre en español disponible",
             nameOficial: objRESTCountry.names.translations["spa"]?.official ?? "No tiene nombre oficial en español disponible",
-            capital: capitales.join(" / "),
-            continent: objRESTCountry.subregion,
-            population: objRESTCountry.population,
-            area: objRESTCountry.area.kilometers,
-            currency: objRESTCountry.currencies[0].name,
-            currencySymbol: objRESTCountry.currencies[0].symbol
+            capital: capitales.length > 0 ? capitales.join(" / ") : "Sin capital",
+            continent: objRESTCountry.subregion?.trim() || "No registrado",
+            population: objRESTCountry.population?? 0,
+            area: objRESTCountry.area.kilometers?? 0,
+            currency: objRESTCountry.currencies[0]?.name ?? "Sin moneda",
+            currencySymbol: objRESTCountry.currencies[0]?.symbol  ?? ""
         }
       }
 

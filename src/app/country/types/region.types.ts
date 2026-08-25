@@ -4,4 +4,4 @@ export type Region =
   | 'Asia'
   | 'Europe'
   | 'Oceania'
-  | 'Antartic';
+  | 'Antarctic';
