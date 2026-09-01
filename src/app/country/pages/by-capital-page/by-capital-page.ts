@@ -1,5 +1,6 @@
-import { Component, inject, Query, resource, signal } from '@angular/core';
+import { Component, inject, linkedSignal, Query, resource, signal } from '@angular/core';
 import { SearchInput } from "../../components/search-input/search-input";
+import { ActivatedRoute } from '@angular/router';
 import { CountryList } from '../../components/country-list/country-list';
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.interface';
@@ -69,15 +70,21 @@ export class ByCapitalPage {
     }
 
   */
-  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Async reactivity with resources
 
-  query = signal<string>("");
+
+  activatedRoute = inject(ActivatedRoute)
+  queryParam = this.activatedRoute.snapshot.queryParamMap.get("query") ?? ""
+
+  query = linkedSignal<string>(()=>this.queryParam);
+
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Async reactivity with resources
 
   countryResource = resource({
 
     params: ()=>({ query: this.query() }),
 
     loader: async({params })=>{
+      console.log({query:params.query})
 
       //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 1: query vacío
         if (params.query ===  '') return [];

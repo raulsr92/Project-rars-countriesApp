@@ -1,4 +1,4 @@
-import {Component, effect, input, output, signal } from '@angular/core';
+import {Component, effect, input, linkedSignal, output, signal } from '@angular/core';
 
 @Component({
   selector: 'country-search-input',
@@ -6,20 +6,21 @@ import {Component, effect, input, output, signal } from '@angular/core';
   templateUrl: './search-input.html'
 })
 export class SearchInput {
-
-  //Signals
-
-    inputValor = signal<string>('')
-
   //Event output
-
     inputValue = output<string>();
 
   //Inputs signals properties
 
     placeholderInput = input.required<string>()
+    debounceTime = input<number>(1000)
 
-    debounceTime = input<number>(300)
+    initialValue = input<string>()
+
+  //Signals
+    //---De la caja de texto
+      inputValor = linkedSignal<string>( ()=>this.initialValue() ?? "" )
+
+
 
   //Método de búsqueda
 

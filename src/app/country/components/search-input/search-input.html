@@ -8,6 +8,8 @@
   (keyup.enter)="onSearch(txtSearch.value)"
   (keyup)="inputValor.set(txtSearch.value)"
 
+  [value]="inputValor()"
+
   #txtSearch
   />
 
