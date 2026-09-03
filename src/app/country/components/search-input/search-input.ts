@@ -13,8 +13,8 @@ export class SearchInput {
 
     placeholderInput = input.required<string>()
     debounceTime = input<number>(1000)
-
     initialValue = input<string>()
+
 
   //Signals
     //---De la caja de texto

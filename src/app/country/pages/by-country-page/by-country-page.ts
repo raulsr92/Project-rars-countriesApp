@@ -1,4 +1,5 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { Component, inject, linkedSignal, resource, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchInput } from "../../components/search-input/search-input";
 import { CountryList } from "../../components/country-list/country-list";
 import { CountryService } from '../../services/country.service';
@@ -18,12 +19,21 @@ export class ByCountryPage {
     }
     */
 
-  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios inyectados
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios propios
     countryService = inject(CountryService)
+
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios de Angular
+
+    activatedRoute = inject(ActivatedRoute)
+    router = inject(Router)
+
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Capturar query parameter
+
+    queryParam = this.activatedRoute.snapshot.queryParamMap.get("query") ?? "" ;
+    query = linkedSignal<string>(()=>this.queryParam);
 
   //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Async reactivity with resources
 
-  query = signal<string>("");
 
   countryResource = resource({
 
@@ -31,8 +41,17 @@ export class ByCountryPage {
 
     loader: async({params })=>{
 
+      console.log({query: params.query})
+
       //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 1: query vacío
         if (params.query ===  '') return [];
+
+        this.router.navigate(["/country/by-country"],
+          {
+            queryParams:{
+              query: params.query
+            }
+          })
 
       //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 2: query con data
         return await firstValueFrom(

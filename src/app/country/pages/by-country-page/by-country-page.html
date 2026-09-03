@@ -1,6 +1,7 @@
 <country-search-input
  (inputValue)="query.set($event)"
  placeholderInput="Buscar por país"
+ [initialValue]="query()"
 />
 
   <country-list
