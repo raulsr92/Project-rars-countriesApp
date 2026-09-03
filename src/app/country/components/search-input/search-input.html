@@ -1,16 +1,16 @@
 
 <section class="flex gap-x-2 mt-2">
   <input
-  type="text"
-  class="input mr-2"
-  [placeholder]="placeholderInput()"
-  autofocus
-  (keyup.enter)="onSearch(txtSearch.value)"
-  (keyup)="inputValor.set(txtSearch.value)"
+    type="text"
+    class="input mr-2"
+    [placeholder]="placeholderInput()"
+    autofocus
+    (keyup.enter)="onSearch(txtSearch.value)"
+    (keyup)="inputValor.set(txtSearch.value)"
 
-  [value]="inputValor()"
+    [value]="inputValor()"
 
-  #txtSearch
+    #txtSearch
   />
 
   <button

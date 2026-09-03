@@ -1,6 +1,6 @@
 import { Component, inject, linkedSignal, Query, resource, signal } from '@angular/core';
 import { SearchInput } from "../../components/search-input/search-input";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CountryList } from '../../components/country-list/country-list';
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.interface';
@@ -71,11 +71,15 @@ export class ByCapitalPage {
 
   */
 
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Inyecciones
 
-  activatedRoute = inject(ActivatedRoute)
-  queryParam = this.activatedRoute.snapshot.queryParamMap.get("query") ?? ""
+    activatedRoute = inject(ActivatedRoute)
+    router = inject(Router)
 
-  query = linkedSignal<string>(()=>this.queryParam);
+  //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Capturar query parameter
+
+    queryParam = this.activatedRoute.snapshot.queryParamMap.get("query") ?? ""
+    query = linkedSignal<string>(()=>this.queryParam);
 
   //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Async reactivity with resources
 
@@ -88,6 +92,16 @@ export class ByCapitalPage {
 
       //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 1: query vacío
         if (params.query ===  '') return [];
+
+        //Antes de impactar la API, hacemos la navegación a otra URL con query parameter
+
+        this.router.navigate(['/country/by-capital'],
+          {
+            queryParams:{
+              query: params.query
+            }
+          }
+        )
 
       //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 2: query con data
         return await firstValueFrom(
