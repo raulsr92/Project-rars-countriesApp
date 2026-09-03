@@ -1,8 +1,9 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { Component, inject, linkedSignal, resource, signal } from '@angular/core';
 import { CountryList } from '../../components/country-list/country-list';
 import { CountryService } from '../../services/country.service';
 import { firstValueFrom } from 'rxjs';
 import { Region } from '../../types/region.types';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-by-region-page',
@@ -11,8 +12,20 @@ import { Region } from '../../types/region.types';
 })
 export class ByRegionPage {
 
-    //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios inyectados
+    //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios propios
       countryService = inject(CountryService)
+
+    //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Servicios de Angular
+
+      activatedRoute = inject(ActivatedRoute)
+
+      router = inject(Router)
+
+    //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Capturar query parameter
+      queryParam = this.activatedRoute.snapshot.queryParamMap.get("query")
+
+      query = linkedSignal<Region|null>(()=>this.queryParam as Region);
+
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Array de Regiones
 
       public regions: Region[] = [
@@ -25,7 +38,6 @@ export class ByRegionPage {
         ];
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Async reactivity with resources
 
-      query = signal<Region|null>(null);
 
       countryResource = resource({
 
@@ -33,7 +45,17 @@ export class ByRegionPage {
         loader: async({params})=>{
 
             //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 1: query vacío
-              if (params.query ===  null) return [];
+              if (params.query ===  null ) return [];
+
+            //☆☆☆☆ Antes de impactar la API, hacemos la navegación a otra URL con query parameter
+
+              this.router.navigate(["/country/by-region"],
+                {
+                  queryParams:{
+                    query: params.query
+                  }
+                }
+              )
 
             //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ Camino 2: query con data
               return await firstValueFrom(this.countryService.searchByRegion(params.query))

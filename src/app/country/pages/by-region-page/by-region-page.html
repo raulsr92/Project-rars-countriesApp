@@ -7,8 +7,9 @@
   @for (region of regions; track region) {
 
     <button
-      class="w-[120px] btn btn-secondary btn-md text-white rounded-xl px-8 focus:outline-1 focus:outline-fuchsia-600 focus:bg-purple-600"
+      class="w-[120px] btn btn-secondary btn-md text-white rounded-xl px-8 focus:outline-1 focus:outline-fuchsia-600 focus:bg-purple-600 active:outline-fuchsia-600 active:bg-purple-600"
       (click)="query.set(region)"
+      [class.outline-fuchsia-600]="query()===region"
     >
       {{region.toUpperCase()}}
 
