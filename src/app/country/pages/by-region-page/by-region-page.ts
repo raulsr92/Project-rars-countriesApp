@@ -5,6 +5,23 @@ import { firstValueFrom } from 'rxjs';
 import { Region } from '../../types/region.types';
 import { ActivatedRoute, Router } from '@angular/router';
 
+
+function validateQueryParam(queryParam:string):Region {
+
+  queryParam = queryParam.toLocaleLowerCase()
+
+  const validRegions: Record<string,Region> ={
+          'africa': 'Africa',
+          'americas': 'Americas',
+          'asia':'Asia',
+          'europe': 'Europe',
+          'oceania':'Oceania',
+          'antarctic': 'Antarctic',
+  }
+
+  return validRegions[queryParam] ?? 'Americas'
+}
+
 @Component({
   selector: 'app-by-region-page',
   imports: [CountryList],
@@ -22,9 +39,10 @@ export class ByRegionPage {
       router = inject(Router)
 
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Capturar query parameter
-      queryParam = this.activatedRoute.snapshot.queryParamMap.get("query")
 
-      query = linkedSignal<Region|null>(()=>this.queryParam as Region);
+      queryParam = this.activatedRoute.snapshot.queryParamMap.get("query") ?? ''
+
+      query = linkedSignal<Region>(()=> validateQueryParam(this.queryParam));
 
     //✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦ Array de Regiones
 
